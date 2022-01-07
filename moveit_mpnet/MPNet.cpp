@@ -228,7 +228,7 @@ at::Tensor ompl::geometric::MPNet::getEncoding(){
     inputs.push_back(torch_tensor);
 
     // std::shared_ptr<torch::jit::script::Module> module = torch::jit::load("/mpnet_data/pytorch_load/encoder_annotated_.pt");
-    std::shared_ptr<torch::jit::script::Module> module = torch::jit::load("/mpnet_data/pytorch_models/encoder_annotated_test_cpu.pt");
+    torch::jit::script::Module module = torch::jit::load("/mpnet_data/pytorch_models/encoder_annotated_test_cpu.pt");
     assert(module != nullptr);
 
     at::Tensor output1 = module->forward(inputs).toTensor();
@@ -473,7 +473,7 @@ bool ompl::geometric::MPNet::feasibilityCheckOMPL(std::vector<base::State *> pat
 }
 
 std::vector<ompl::base::State *> ompl::geometric::MPNet::replanPath(std::vector<ompl::base::State *> path, ompl::base::State *goal,
-                                                                        std::shared_ptr<torch::jit::script::Module> MLP, at::Tensor obs_enc, const float jointRange[], int dim)
+                                                                        torch::jit::script::Module MLP, at::Tensor obs_enc, const float jointRange[], int dim)
 {    
     std::vector<ompl::base::State *> new_path;
 
@@ -629,7 +629,7 @@ std::vector<ompl::base::State *> ompl::geometric::MPNet::MPNetSolve()
     std::vector<torch::jit::IValue> mlp_input_1;
     std::vector<torch::jit::IValue> mlp_input_2;
     
-    std::shared_ptr<torch::jit::script::Module> MLP;
+    torch::jit::script::Module MLP;
     // MLP = torch::jit::load("/mpnet_data/pytorch_gpu_load/mlp_annotated_test_gpu.pt");
     // MLP = torch::jit::load("/gpu_model_load_test/mlp_annotated_test_gpu.pt");
     MLP = torch::jit::load("/mpnet_data/pytorch_models/mlp_annotated_test_gpu.pt");
